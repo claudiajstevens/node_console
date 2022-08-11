@@ -1,5 +1,6 @@
 let express = require('express');
 let app = express();
+let bodyParser = require('body-parser');
 
 console.log("Hello World");
 
@@ -52,13 +53,35 @@ app.get("/:word/echo", function(req,res){
 });
 
 
+/*Build an API endpoint, mounted at GET /name. Respond with a JSON document, taking the structure { name: 'firstname lastname'}. The first and last name parameters should be encoded in a query string e.g. ?first=firstname&last=lastname.
+
+Note: In the following exercise you are going to receive data from a POST request, at the same /name route path. If you want, you can use the method app.route(path).get(handler).post(handler). This syntax allows you to chain different verb handlers on the same path route. You can save a bit of typing, and have cleaner code
+
+app.route("/name").get(function(req, res, next){
+  let fname = req.query.first;
+  let lname = req.query.last;
+  res.json({
+    name:fname + ' ' + lname
+  })
+  next();
+}).post();
+*/
 
 
+/*body-parser has already been installed and is in your project's package.json file. require it at the top of the myApp.js file and store it in a variable named bodyParser. The middleware to handle URL encoded data is returned by bodyParser.urlencoded({extended: false}). Pass the function returned by the previous method call to app.use(). As usual, the middleware must be mounted before all the routes that depend on it.*/
+app.use(bodyParser.urlencoded({extended: false}));
 
+/*Mount a POST handler at the path /name
 
-
-
-
+Respond with the same JSON object as before: {name: 'firstname lastname'}. Test if your endpoint works using the html form we provided in the app frontpage.
+*/
+app.post("/name", function(req, res){
+  let fname = req.body.first;
+  let lname = req.body.last;
+  res.json({
+    name:fname + ' ' + lname
+  })
+})
 
 
 
